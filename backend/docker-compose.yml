@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    postgres_db:
+        image: postgres:13.5
+        container_name: PostgresContainer
+        restart: always
+        environment:
+            - POSTGRES_USER=hieudh
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=tiktokclone
+        volumes:
+            - postgres_db:/var/lib/postgresql/data
+        ports:
+            - '5432:5432'
+volumes:
+    postgres_db:
+        driver: local
