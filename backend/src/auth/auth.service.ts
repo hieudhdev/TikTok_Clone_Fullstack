@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, UseFilters } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service'; 
 import * as bcrypt from 'bcrypt';
@@ -6,6 +6,7 @@ import { Response, Request } from 'express';
 import { User } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { LoginDto, RegisterDto } from './dto';
+import { GraphQLErrorFilter } from '../filters/custom-exception.filter'
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
         private readonly prisma: PrismaService,
         private readonly configService: ConfigService,
     ) {}
-
+    
     async genAccessTokenByRefreshToken (req: Request, res: Response): Promise<string> {
         const refreshToken = req.cookies['refresh_token'];
 
@@ -94,7 +95,7 @@ export class AuthService {
         });
     
         if (existingUser) {
-          throw new Error('Email already in use');
+            throw new BadRequestException({email: 'Email already in use'});
         }
     
         const hashedPassword = await bcrypt.hash(registerDto.password, 10);
