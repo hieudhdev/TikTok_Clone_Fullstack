@@ -1,8 +1,10 @@
-import React from 'react';
+import MainLayout from '../layouts/MainLayout'
 
 function Feed() {
   return (
-    <div>Feed</div>
+    <MainLayout>
+      <div>Feed</div>
+    </MainLayout>
   )
 }
 
