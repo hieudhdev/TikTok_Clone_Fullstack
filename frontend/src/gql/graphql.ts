@@ -19,12 +19,21 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: { input: any; output: any; }
 };
 
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
   message: Scalars['String']['output'];
+};
+
+export type LikeType = {
+  __typename?: 'LikeType';
+  id: Scalars['Int']['output'];
+  postId: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
 };
 
 export type LoginDto = {
@@ -40,10 +49,23 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createPost: PostType;
+  deletePost: PostType;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   register: RegisterResponse;
+};
+
+
+export type MutationCreatePostArgs = {
+  text: Scalars['String']['input'];
+  video: Scalars['Upload']['input'];
+};
+
+
+export type MutationDeletePostArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -56,10 +78,50 @@ export type MutationRegisterArgs = {
   registerInput: RegisterDto;
 };
 
+export type PostDetails = {
+  __typename?: 'PostDetails';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  likes?: Maybe<Array<LikeType>>;
+  otherPostIds?: Maybe<Array<Scalars['Float']['output']>>;
+  text: Scalars['String']['output'];
+  user: User;
+  video: Scalars['String']['output'];
+};
+
+export type PostType = {
+  __typename?: 'PostType';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  likes?: Maybe<Array<LikeType>>;
+  text: Scalars['String']['output'];
+  user: User;
+  video: Scalars['String']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  getPostById: PostDetails;
+  getPosts: Array<PostType>;
+  getPostsByUserId: Array<PostType>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
+};
+
+
+export type QueryGetPostByIdArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetPostsArgs = {
+  skip?: Scalars['Int']['input'];
+  take?: Scalars['Int']['input'];
+};
+
+
+export type QueryGetPostsByUserIdArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 export type RegisterDto = {
@@ -86,6 +148,14 @@ export type User = {
   password: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
+
+export type CreatePostMutationVariables = Exact<{
+  text: Scalars['String']['input'];
+  video: Scalars['Upload']['input'];
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostType', id: number, text: string, video: string } };
 
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -116,6 +186,7 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }> };
 
 
+export const CreatePostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreatePost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"text"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"video"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"text"},"value":{"kind":"Variable","name":{"kind":"Name","value":"text"}}},{"kind":"Argument","name":{"kind":"Name","value":"video"},"value":{"kind":"Variable","name":{"kind":"Name","value":"video"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"video"}}]}}]}}]} as unknown as DocumentNode<CreatePostMutation, CreatePostMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullname"}}]}}]}}]}}]} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
 export const LogoutUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogoutUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logout"}}]}}]} as unknown as DocumentNode<LogoutUserMutation, LogoutUserMutationVariables>;
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"fullname"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"fullname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"fullname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"confirmPassword"},"value":{"kind":"Variable","name":{"kind":"Name","value":"confirmPassword"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullname"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
@@ -129,12 +200,21 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: { input: any; output: any; }
 };
 
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
   message: Scalars['String']['output'];
+};
+
+export type LikeType = {
+  __typename?: 'LikeType';
+  id: Scalars['Int']['output'];
+  postId: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
 };
 
 export type LoginDto = {
@@ -150,10 +230,23 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createPost: PostType;
+  deletePost: PostType;
   login: LoginResponse;
   logout: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   register: RegisterResponse;
+};
+
+
+export type MutationCreatePostArgs = {
+  text: Scalars['String']['input'];
+  video: Scalars['Upload']['input'];
+};
+
+
+export type MutationDeletePostArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -166,10 +259,50 @@ export type MutationRegisterArgs = {
   registerInput: RegisterDto;
 };
 
+export type PostDetails = {
+  __typename?: 'PostDetails';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  likes?: Maybe<Array<LikeType>>;
+  otherPostIds?: Maybe<Array<Scalars['Float']['output']>>;
+  text: Scalars['String']['output'];
+  user: User;
+  video: Scalars['String']['output'];
+};
+
+export type PostType = {
+  __typename?: 'PostType';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  likes?: Maybe<Array<LikeType>>;
+  text: Scalars['String']['output'];
+  user: User;
+  video: Scalars['String']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  getPostById: PostDetails;
+  getPosts: Array<PostType>;
+  getPostsByUserId: Array<PostType>;
   getUsers: Array<User>;
   hello: Scalars['String']['output'];
+};
+
+
+export type QueryGetPostByIdArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetPostsArgs = {
+  skip?: Scalars['Int']['input'];
+  take?: Scalars['Int']['input'];
+};
+
+
+export type QueryGetPostsByUserIdArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 export type RegisterDto = {
@@ -196,6 +329,14 @@ export type User = {
   password: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
+
+export type CreatePostMutationVariables = Exact<{
+  text: Scalars['String']['input'];
+  video: Scalars['Upload']['input'];
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostType', id: number, text: string, video: string } };
 
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -226,6 +367,42 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }> };
 
 
+export const CreatePostDocument = gql`
+    mutation CreatePost($text: String!, $video: Upload!) {
+  createPost(text: $text, video: $video) {
+    id
+    text
+    video
+  }
+}
+    `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      video: // value for 'video'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const LoginUserDocument = gql`
     mutation LoginUser($email: String!, $password: String!) {
   login(loginInput: {email: $email, password: $password}) {
