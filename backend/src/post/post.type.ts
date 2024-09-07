@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-// import { Comment } from 'src/comment/comment.type';
-import { LikeType } from 'src/like/like.type';
+import { Comment } from 'src/comment/comment.type';
+import { LikeType } from 'src/like/like.model';
 import { User } from 'src/user/user.model';
 
 @ObjectType()
