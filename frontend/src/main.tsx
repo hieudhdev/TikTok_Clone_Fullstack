@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/upload',
-    element: <Upload />
+    element: <ProtectedRoutes><Upload /></ProtectedRoutes>
   },
   {
     path: '/profile/:id',

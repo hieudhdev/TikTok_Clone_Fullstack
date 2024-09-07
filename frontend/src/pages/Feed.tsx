@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import MainLayout from "../layouts/MainLayout"
 import PostMain from "../components/PostMain"
-import { GET_ALL_POSTS } from "../graphql/queries/getPosts"
+import { GET_ALL_POSTS } from "../graphql/queries/GetPosts"
 import { useQuery } from "@apollo/client"
 
 function Feed() {
