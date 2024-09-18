@@ -1,6 +1,6 @@
 ## Overview project
-- This project is clone of TikTok with basic feature
-- Techstack: NestJs, React, GraphQL, ApolloClient, Prisma, PostgreSQL, Zustand & TaiwindCSS
+- This project is clone of TikTok with basic features
+- Techstack: NestJs, React, GraphQL, ApolloClient, Prisma, PostgreSQL, Zustand & TaiwindCSS, Docker
 
 ## Features list 
     - ...
