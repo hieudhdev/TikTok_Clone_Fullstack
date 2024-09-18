@@ -70,6 +70,11 @@ export class UserResolver {
       return this.userService.getUsers();
     }
 
+    @Query(() => User)
+    async getUserByUserId(@Args('userId') userId: number) {
+      return this.userService.getUserByUserId(userId);
+    }
+
     @UseGuards(GraphqlAuthGuard)
     @Mutation(() => User)
     async updateUserProfile(

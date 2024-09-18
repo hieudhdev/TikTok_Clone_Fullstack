@@ -22,6 +22,9 @@ export class PostType {
 
   @Field(() => [LikeType], { nullable: true })
   likes?: LikeType[];
+
+  // @Field(() => [Comment], { nullable: true })
+  // comments?: Comment[];
 }
 
 @ObjectType()
